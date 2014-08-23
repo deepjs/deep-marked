@@ -101,21 +101,23 @@ renderer.replace_macro = function(content, options) {
 	return "<div>"+content+"<div>";
 };
 
-opt = {
-	  renderer: renderer,
-	  gfm: true,
-	  tables: true,
-	  breaks: false,
-	  pedantic: false,
-	  sanitize: false,
-	  smartLists: true,
-	  smartypants: false,
+var opt = {
+	renderer: renderer,
+	gfm: true,
+	tables: true,
+	breaks: false,
+	pedantic: false,
+	sanitize: false,
+	smartLists: true,
+	smartypants: false,
 
-	  //___________________ those 3 config flags are from macros implementation
-	  codespaces:false,		// disable markdown rules : every line starting with 4 spaces (or more) or tab(s) are code
-	  macros:true,			// enable macros parsing
-	  directivesParser:directivesParser  // provide directives parser
-	}
+	//___________________ those 3 config flags are from macros implementation
+	codespaces:false,		// disable markdown rules : every line starting with 4 spaces (or more) or tab(s) are code
+	macros:true,			// enable macros parsing
+	directivesParser:directivesParser  // provide directives parser
+};
+
+marked("# hello\n\n{{ to.replace }}", opt);
 
 ```
 

@@ -89,6 +89,10 @@ define(["require", "./lib/marked", "deepjs/deep", "deepjs/lib/views/directives-p
 		if(deep.utils.isFunction(macro))
 			return macro;
 		return macro[type] || null;
-	}
+	};
+	deep.marked.setOptions = function(opt){
+		marked.setOptions(opt);
+	};
+
 	return deep.marked;
 });

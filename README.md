@@ -23,7 +23,7 @@ See [marked](https://github.com/chjj/marked) for basics usage.
 
 ```
 {% myDirective(arg1, ...) mySecondDirective(arg, ...) myThirdDirective ...
-	any content that will be parsed by custom marked parser before injection in block (so any markdown or macros will be parsed).
+	any content that will be parsed before injection in block (so any markdown or macros will be parsed).
 %}
 ```
 
@@ -37,7 +37,7 @@ See [marked](https://github.com/chjj/marked) for basics usage.
 
 #### direct macro. 
 
-Should start line without spaces or tabulations.
+When use in front of line (i.e. should start line without spaces or tabulations), any following string until end of line will be used as content.
 
 `@.myDirective(arg, ...)  content...`
 
@@ -91,7 +91,7 @@ renderer.inline_macro = function(directive, options) {
 	// directive is a single directive : { name:"myDirective", args:[...] }
 	// options is an object that you provide when parsing
 	
-	return "<div>"+JSON.stringify(directives)<div>";
+	return "<div>"+JSON.stringify(directives)+"<div>";
 };
 //_________________________________________________________________________ REPLACE MACRO 
 renderer.replace_macro = function(content, options) {
@@ -131,7 +131,7 @@ It seeks in it after property pointed by path provided between macros boundaries
 require("deep-marked/index");	// load deep.marked : language is defined there
 deep.marked("{{ address.zip }}", { context:{ address:{ zip:"1190" }}})
 ```
-will return '1190'
+will return '1190'.
 
 ### Block macros generality
 

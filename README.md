@@ -9,7 +9,7 @@ deep-marked defines :
 
 See [marked](https://github.com/chjj/marked) for config and basics usage.
 
-If you just want to use it quickly : see [deep.marked macros language](#deep-marked-macros-managements)
+If you just want to use it quickly : see [deep.marked macros language](#deep-marked-macros-language)
 
 
 ## Meta-language
@@ -123,7 +123,7 @@ marked("# hello\n\n{{ to.replace }}", opt);
 
 ```
 
-## deep-marked macros managements
+## deep-marked macros language
 
 deep-marked define the 3 defaults render methods for you.
 

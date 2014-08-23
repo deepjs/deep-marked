@@ -1,6 +1,6 @@
 /**
  * @author Gilles Coomans <gilles.coomans@gmail.com>
- *
+ * TODO : write real tests.
  */
  
 if (typeof define !== 'function') {

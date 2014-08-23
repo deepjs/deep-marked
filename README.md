@@ -163,7 +163,9 @@ and this :
 It will output : `<myTag>hello world : MY CONTENT...</myTag>`
 
 
-#### Difference between parsed and raw block-macros (wich is true from meta language itself)
+#### Difference between parsed and raw block-macros 
+
+Remarque : It comes from meta language itself.
 
 ```
 {% myTag

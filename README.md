@@ -1,6 +1,6 @@
 # deep-marked
 
-markdown with macros
+Markdown with macros.
 
 deep-marked defines :
 * a meta-language parsed by [marked](https://github.com/chjj/marked) lexer/parser (implemented in deep-marked/lib/marked.js and using deep-views/lib/directives-parser)
@@ -8,6 +8,8 @@ deep-marked defines :
 * the clients/protocol (jquery ajax or nodejs fs) to load and parse documents written in that flavour of marked.
 
 See [marked](https://github.com/chjj/marked) for config and basics usage.
+
+If you just want to use it quickly : see [deep.marked macros language](#deep-marked-macros-managements)
 
 
 ## Meta-language

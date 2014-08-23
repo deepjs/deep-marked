@@ -126,8 +126,8 @@ marked("# hello\n\n{{ to.replace }}", opt);
 deep-marked define the 3 defaults render methods for you.
 
 ### substitution macros
-The replace_macro simply look in provided options if there is a 'context' property.
-It seeks in it after property pointed by path provided between macros boundaries (i.e. {{ my.path.from.context }}) and return it.
+The replace_macro simply looks in provided options if there is a 'context' property.
+It seeks in it after property pointed by path provided between macros boundaries (i.e. {{ my.path.from.context }}) and returns it.
 
 ```javascript 
 require("deep-marked/index");	// load deep.marked : language is defined there
@@ -142,7 +142,7 @@ There is three things important to know :
 * either the directive name is "unknown" (there is no associated macros in deep.marked.macros), and then deep-marked produce a tag with the name of the unknown directive. (i.e.  `<myDirective>content</myDirective>`)
 * directives are composed together, from right to left.
 
-And obviously blocks could be embedded in other blocks, and block could contains any other macros rules.
+And obviously blocks could be embedded in other blocks, and blocks could contains any other macros rules.
 
 Example:
 

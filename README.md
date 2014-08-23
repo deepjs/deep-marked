@@ -2,7 +2,7 @@
 
 markdown with macros
 
-deep-marked define :
+deep-marked defines :
 * a meta-language parsed by [marked](https://github.com/chjj/marked) lexer/parser (implemented in deep-marked/lib/marked.js and using deep-views/lib/directives-parser)
 * a proposition of language based on this meta-language (implemented in deep-marked/index)
 * the clients/protocol (jquery ajax or nodejs fs) to load and parse documents written in that flavour of marked.
@@ -12,40 +12,45 @@ See [marked](https://github.com/chjj/marked) for config and basics usage.
 
 ## Meta-language
 
-Remarque : "Block" and "inline" refer to concept related to markdown. A "block" start line without any spaces (or tabulations), as heading (i.e. # this is title), and couldn't be mixed with other on the same line. For inline object, the line could start with spaces, could contains several lexem, and the line and its following (not blank) are wrapped by a paragraph (p tag).
+Remarque : "Block" and "inline" refer to concepts related to markdown. A "block" start line without any spaces (or tabulations), as heading (i.e. # this is title), and couldn't be mixed with other on the same line. For inline object, the line could start with spaces, could contains several lexem, and the line and its following (not blank) are wrapped by a paragraph (p tag).
 
 See [marked](https://github.com/chjj/marked) for basics usage.
 
 
 ### Block macros
 
-block macro
+#### block macro (with parsed content)
+
 ```
 {% myDirective(arg1, ...) mySecondDirective(arg, ...) myThirdDirective ...
 	any content that will be parsed by custom marked parser before injection in block (so any markdown or macros will be parsed).
 %}
 ```
 
-raw macro
+#### raw macro (content are not parsed)
+
 ```
 {! myDirective(arg1, ...) mySecondDirective(arg, ...) ...
 	any content that will be kept "as this" (raw) before injection in block
 !}
 ```
 
-direct macro. Should start line without spaces or tabulations.
+#### direct macro. 
+
+Should start line without spaces or tabulations.
+
 `@.myDirective(arg, ...)  content...`
 
-substitution macro
-`{{ theVar.to.be.substitute }}`
+#### substitution macro
 
+`{{ theVar.to.be.substitute }}`
 
 ### Inline macros
 
-direct macro
+#### direct macro
 `@.myDirective(arg, ..., content)`
 
-substitution macro
+#### substitution macro
 `{{ theVar.to.be.substitute }}`
 
 ### Directives format
@@ -211,4 +216,12 @@ deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
 // will output the result
 ```
 
+## Remarque
 
+The language and the meta-language proposed there is a base for future reflexions.
+It is already greatfuly usable, but as it want to be opened, lot of things are possible...
+If you want to contribute, you're welcome...;)
+
+## Licence
+
+LGPL 3.0

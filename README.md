@@ -197,7 +197,7 @@ Remarque : the compile function comes from custom marked parser (deep-marked/lib
 
 ## Clients
 
-Clients will load markdown documents (deep-marked flavoured), compile it and keep them in cache (deep media cache) for further usage.
+Clients will load markdown documents (deep-marked flavoured), compile them and keep them in cache (deep media cache) for further usage.
 
 Two implementations are there for the moment : jquery/ajax or nodejs/fs.
 Under nodejs, there is some file watching that update cache if file change.

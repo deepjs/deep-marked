@@ -4,12 +4,11 @@
 
 	@.small(" hello world ")
 
-<small> hello </small>
 <small>`hello`</small>
 
 {% section inner 
-	{% reu
-		# hihi
+	{% aTag
+		# my title
 
 		<p> <small> hello  {{ title }}  </small>@.capitilize(doo) `hello`</p>
 
@@ -18,16 +17,17 @@
 
 	@.hello(____fast is not enough____ )
 
-{%  block_inline(fzejkfezl, oihhu) context(name) %}
-{! raw_inline(raw_inline) !}
+{%  block_inline(foo, 12) context(name) %}
+{! raw_inline !}
 
-	{! rawWithTab(raw) capitilize
+	{! rawWithTab() capitilize
 		raw text
-		# hjhjd
+		# a title
 	!}
 
 __this is bold__
 
 {{ name }}
 {% dp-try(json::/...)  %}
+
 

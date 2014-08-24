@@ -6,7 +6,7 @@
 if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
-define(["require", "./lib/marked", "deepjs/deep", "deepjs/lib/views/directives-parser", "./lib/macros"], function(require, marked, deep, directives, macros){
+define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-parser", "./lib/macros"], function(require, marked, deep, directives, macros){
 
 	var renderBlockTag = function(directive, content){
 		return "<"+directive.name+">\n"+ content + "\n</"+directive.name+">"

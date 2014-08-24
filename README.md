@@ -207,7 +207,7 @@ Under nodejs, there is some file watching that update cache if file change.
 Browser (jq-ajax) example : 
 ```javascript 
 require("deep-marked/lib/clients/jq-ajax"); // load deep.marked : contains language definition
-deep.marked.JQAjax("myProtocol");
+deep.marked.jqajax("myProtocol");
 //...
 deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
 // will output the result
@@ -216,7 +216,7 @@ deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
 Nodejs (fs) example : 
 ```javascript 
 require("deep-marked/lib/clients/nodejs"); // load deep.marked : contains language definition
-deep.marked.Nodejs("myProtocol");
+deep.marked.nodejs("myProtocol");
 //...
 deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
 // will output the result

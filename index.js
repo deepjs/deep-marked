@@ -6,7 +6,7 @@
 if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
-define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-parser", "./lib/macros"], function(require, marked, deep, directives, macros){
+define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-parser", "./lib/directives"], function(require, marked, deep, directivesParser, directives){
 
 	var renderer = new marked.Renderer();
 	//_________________________________________________________________________ BLOCK MACRO 
@@ -17,9 +17,9 @@ define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-par
 		for(var i = directives.length; --i >= 0;)
 		{
 			var dir = directives[i];
-			var mcr = deep.marked.getMacro(dir.name, "block");
+			var mcr = deep.marked.getDirectives(dir.name, "block");
 			if(!mcr)
-				res = deep.marked.macros.blockDefault(dir, res);
+				res = deep.marked.directives.blockDefault(dir, res);
 			else
 				res = mcr(dir.args, res, options);
 		}
@@ -27,9 +27,9 @@ define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-par
 	};
 	//________________________________________________________________________ DIRECT MACRO
 	renderer.inline_macro = function(directive, options) {
-		var mcr = deep.marked.getMacro(directive.name, "inline");
+		var mcr = deep.marked.getDirectives(directive.name, "inline");
 		if(!mcr)
-			return deep.marked.macros.inlineDefault(directive);
+			return deep.marked.directives.inlineDefault(directive);
 		else
 			return mcr(directive.args, options);
 	};
@@ -60,7 +60,7 @@ define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-par
 	  smartypants: false,
 	  codespaces:false,
 	  macros:true,
-	  directivesParser:directives
+	  directivesParser:directivesParser
 	};
 
 	marked.setOptions(deep.marked.opt);
@@ -68,16 +68,16 @@ define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-par
 	deep.marked.compile = marked.compile;
 	deep.marked.renderer = renderer;
 
-	deep.utils.directives = directives;
+	deep.utils.directivesParser = directivesParser;
 
-	deep.marked.macros = macros;
-	deep.marked.getMacro = function(name, type){
-		var macro = deep.marked.macros[name];
-		if(!macro)
+	deep.marked.directives = directives;
+	deep.marked.getDirectives = function(name, type){
+		var dir = deep.marked.directives[name];
+		if(!dir)
 			return null;
-		if(deep.utils.isFunction(macro))
-			return macro;
-		return macro[type] || null;
+		if(deep.utils.isFunction(dir))
+			return dir;
+		return dir[type] || null;
 	};
 	deep.marked.setOptions = function(opt){
 		marked.setOptions(opt);

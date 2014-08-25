@@ -1,6 +1,6 @@
 {
   "name": "deep-marked",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Gilles Coomans <gilles.coomans@gmail.com>",
   "description": "custom marked parser (markdown) with macros support and related clients. ",
   "licenses": [
@@ -14,7 +14,7 @@
     "url":"https://github.com/deepjs/deep-marked.git"
   },
   "dependencies": {
-    "deepjs":">=0.10.3"
+    "deepjs":">=0.13.0"
   },
   "main": "./index.js"
 }

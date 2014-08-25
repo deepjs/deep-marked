@@ -9,7 +9,147 @@ deep-marked defines :
 
 See [marked](https://github.com/chjj/marked) for config and basics usage.
 
-If you just want to use it quickly : see [deep.marked macros language](#deep-marked-macros-language)
+If you just want to play with the meta language or understand what is it : see [meta language](#meta-language)
+
+## deep-marked macros language
+
+deep-marked define the 3 defaults render methods for you that interpret macros and try to apply associated directives or behaviour.
+
+### substitution macros
+The replace_macro simply looks in provided options if there is a 'context' property.
+It seeks in it after property pointed by path provided between macros boundaries (i.e. {{ my.path.from.context }}) and returns it.
+
+```javascript 
+require("deep-marked/index");	// load deep.marked : language is defined there
+deep.marked("{{ address.zip }}", { context:{ address:{ zip:"1190" }}})
+```
+will return '1190'.
+
+### Block macros generality
+
+There is three things important to know : 
+* either the directive name reflect a macros defined in deep.marked.macros, and it will be used to render the macros. (see below to defining such macros)
+* either the directive name is "unknown" (there is no associated macros in deep.marked.macros), and then deep-marked produce a tag with the name of the unknown directive. (i.e.  `<myDirective>content</myDirective>`)
+* directives are composed together, from right to left.
+
+And obviously blocks could be embedded in other blocks, and blocks could contains any other macros rules.
+
+Example:
+
+With :
+```javascript
+deep.marked.macros.myDirective = function(args, content, options)
+{
+	return args[0] + " : " + content.toUpperCase();
+};
+```
+and this :
+```
+{% myTag myDirective( hello world )
+	My content...
+%}
+
+```
+It will output : `<myTag>hello world : MY CONTENT...</myTag>`
+
+
+#### Difference between parsed and raw block-macros 
+
+Remarque : It comes from meta language itself.
+
+```
+{% myTag
+__this is strong__ @.myOtherTag( my content )
+%}
+```
+output : `<myTag><strong>this is strong</strong><myOtherTag>my content</myOtherTag></myTag>`
+
+```
+{! myTag
+__this is strong__ @.myOtherTag( my content )
+!}
+```
+output : `<myTag>__this is strong__ @.myOtherTag( my content )</myTag>`
+
+
+## Compilation and reusability
+
+Another addition to marked parser is that you could now compile markdown documents to reuse it several times.
+
+```javascript
+require("deep-marked/index");	// load deep.marked : contains language definition
+var template = deep.marked.compile("		{{ name }} says : @.hello(world)");
+template({ name:"John" });
+// will output <p>John says : <hello>world</hello></p>
+```
+
+Remarque : the compile function comes from custom marked parser (deep-marked/lib/marked) so it could be used without deep-marked language or macros.
+
+## Table parsing.
+
+You could combine raw macros and a small tab delimitted cells lines lexer to produce quickly any "table like" widgets.
+
+```
+{! table ( Nodejs specifics deepjs libraries )
+autobahnjs		(restful thin server : middlewares (expressjs) + routing)
+
+deep-shell		(sh & ssh chains and cli)
+
+deep-nodejs		(nodejs related tools (restful fs, ...))
+deep-mongo		(restful mongodb client)
+deep-elastic  	(restful client : ok, index management : embryonnar, layered queries : to do)
+
+deep-mail		(mails sender utilities)
+!}
+```
+
+```javascript
+deep.marked.macros.table = function(args, content, options){
+	var lines = deep.marked.parseLinesCells(content, false);
+	var output = "<table>\n";
+	if(args && args[0])	// args[0] === table caption
+		output += "<caption>"+args[0]+"</caption>\n";
+	lines.forEach(function(cells){
+		if(!cells.length)
+		{
+			output += "<tr></tr>\n";
+			return;
+		}
+		output += "<tr>\n";
+		cells.forEach(function(cell){
+			output += "<td>"+cell+"</td>";
+		});
+		output += "\n</tr>\n";
+	})
+	output  += "</table>\n";
+	return output;
+}
+```
+
+## Clients
+
+Clients will load markdown documents (deep-marked flavoured), compile them and keep them in cache (deep media cache) for further usage.
+
+Two implementations are there for the moment : jquery/ajax or nodejs/fs.
+Under nodejs, there is some file watching that update cache if file change.
+
+Browser (jq-ajax) example : 
+```javascript 
+require("deep-marked/lib/clients/jq-ajax"); // load deep.marked : contains language definition
+deep.marked.jqajax("myProtocol");
+//...
+deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
+// will output the result
+```
+
+Nodejs (fs) example : 
+```javascript 
+require("deep-marked/lib/clients/nodejs"); // load deep.marked : contains language definition
+deep.marked.nodejs("myProtocol");
+//...
+deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
+// will output the result
+```
 
 
 ## Meta-language
@@ -123,104 +263,6 @@ marked("# hello\n\n{{ to.replace }}", opt);
 
 ```
 
-## deep-marked macros language
-
-deep-marked define the 3 defaults render methods for you.
-
-### substitution macros
-The replace_macro simply looks in provided options if there is a 'context' property.
-It seeks in it after property pointed by path provided between macros boundaries (i.e. {{ my.path.from.context }}) and returns it.
-
-```javascript 
-require("deep-marked/index");	// load deep.marked : language is defined there
-deep.marked("{{ address.zip }}", { context:{ address:{ zip:"1190" }}})
-```
-will return '1190'.
-
-### Block macros generality
-
-There is three things important to know : 
-* either the directive name reflect a macros defined in deep.marked.macros, and it will be used to render the macros. (see below to defining such macros)
-* either the directive name is "unknown" (there is no associated macros in deep.marked.macros), and then deep-marked produce a tag with the name of the unknown directive. (i.e.  `<myDirective>content</myDirective>`)
-* directives are composed together, from right to left.
-
-And obviously blocks could be embedded in other blocks, and blocks could contains any other macros rules.
-
-Example:
-
-With :
-```javascript
-deep.marked.macros.myDirective = function(args, content, options)
-{
-	return args[0] + " : " + content.toUpperCase();
-};
-```
-and this :
-```
-{% myTag myDirective( hello world )
-	My content...
-%}
-
-```
-It will output : `<myTag>hello world : MY CONTENT...</myTag>`
-
-
-#### Difference between parsed and raw block-macros 
-
-Remarque : It comes from meta language itself.
-
-```
-{% myTag
-__this is strong__ @.myOtherTag( my content )
-%}
-```
-output : `<myTag><strong>this is strong</strong><myOtherTag>my content</myOtherTag></myTag>`
-
-```
-{! myTag
-__this is strong__ @.myOtherTag( my content )
-!}
-```
-output : `<myTag>__this is strong__ @.myOtherTag( my content )</myTag>`
-
-
-## Compilation and reusability
-
-Another addition to marked parser is that you could now compile markdown documents to reuse it several times.
-
-```javascript
-require("deep-marked/index");	// load deep.marked : contains language definition
-var template = deep.marked.compile("		{{ name }} says : @.hello(world)");
-template({ name:"John" });
-// will output <p>John says : <hello>world</hello></p>
-```
-
-Remarque : the compile function comes from custom marked parser (deep-marked/lib/marked) so it could be used without deep-marked language or macros.
-
-## Clients
-
-Clients will load markdown documents (deep-marked flavoured), compile them and keep them in cache (deep media cache) for further usage.
-
-Two implementations are there for the moment : jquery/ajax or nodejs/fs.
-Under nodejs, there is some file watching that update cache if file change.
-
-Browser (jq-ajax) example : 
-```javascript 
-require("deep-marked/lib/clients/jq-ajax"); // load deep.marked : contains language definition
-deep.marked.jqajax("myProtocol");
-//...
-deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
-// will output the result
-```
-
-Nodejs (fs) example : 
-```javascript 
-require("deep-marked/lib/clients/nodejs"); // load deep.marked : contains language definition
-deep.marked.nodejs("myProtocol");
-//...
-deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
-// will output the result
-```
 
 ## Remarque
 

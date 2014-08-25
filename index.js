@@ -8,14 +8,6 @@ if (typeof define !== 'function') {
 }
 define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-parser", "./lib/macros"], function(require, marked, deep, directives, macros){
 
-	var renderBlockTag = function(directive, content){
-		return "<"+directive.name+">\n"+ content + "\n</"+directive.name+">"
-	};
-	var renderInlineTag = function(directive){
-		var args = directive.args,
-			content = (args && args.length)?args[args.length-1]:"";
-		return "<"+directive.name+">"+ content + '</'+directive.name+'>'
-	};
 	var renderer = new marked.Renderer();
 	//_________________________________________________________________________ BLOCK MACRO 
 	renderer.block_macro = function(directives, content, options) {
@@ -27,7 +19,7 @@ define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-par
 			var dir = directives[i];
 			var mcr = deep.marked.getMacro(dir.name, "block");
 			if(!mcr)
-				res = renderBlockTag(dir, res);
+				res = deep.marked.macros.blockDefault(dir, res);
 			else
 				res = mcr(dir.args, res, options);
 		}
@@ -37,7 +29,7 @@ define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-par
 	renderer.inline_macro = function(directive, options) {
 		var mcr = deep.marked.getMacro(directive.name, "inline");
 		if(!mcr)
-			return renderInlineTag(directive);
+			return deep.marked.macros.inlineDefault(directive);
 		else
 			return mcr(directive.args, options);
 	};
@@ -78,9 +70,6 @@ define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-par
 
 	deep.utils.directives = directives;
 
-	deep.marked.renderInlineTag = renderInlineTag;
-	deep.marked.renderBlockTag = renderBlockTag;
-
 	deep.marked.macros = macros;
 	deep.marked.getMacro = function(name, type){
 		var macro = deep.marked.macros[name];
@@ -93,6 +82,31 @@ define(["require", "./lib/marked", "deepjs/deep", "deep-views/lib/directives-par
 	deep.marked.setOptions = function(opt){
 		marked.setOptions(opt);
 	};
+	var cellDelimitter = /^([^\n]+?)(?=\s{4,}|\n)(?:(\s{4,})?)/;
+
+	/**
+	 * Parse tab delimitted lines from string. usefull for raw macros and table like widgets rendering.
+	 * @param  {String} src        the content block to parse until the end.
+	 * @param  {Boolean} skipBlanck optional. if true, skip blank lines.
+	 * @return {Array}            Parsed lines. Array of cells array. i.e. lines[2][3] gives you third cell of second line.
+	 */
+	deep.marked.parseLinesCells = function(src, skipBlanck){
+		var tokens = [], cells, cap;
+		while(src)
+		{
+			cells = [];
+			while(cap = cellDelimitter.exec(src))
+			{
+				src = src.substring(cap[0].length);
+				cells.push(cap[1]);
+			}
+			if(cells.length || !skipBlanck)
+				tokens.push(cells);
+			// src should start now with \n or \r
+			src = src.substring(1);
+		}
+		return tokens;
+	}
 
 	return deep.marked;
 });

@@ -1,6 +1,6 @@
 {
   "name": "deep-marked",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Gilles Coomans <gilles.coomans@gmail.com>",
   "description": "custom marked parser (markdown) with macros support and related clients. ",
   "licenses": [

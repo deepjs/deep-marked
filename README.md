@@ -3,20 +3,18 @@
 Markdown with macros.
 
 deep-marked defines :
-* a meta-language parsed by [marked](https://github.com/chjj/marked) lexer/parser (implemented in deep-marked/lib/marked.js and using deep-views/lib/directives-parser)
+* a meta-language parsed by [marked](https://github.com/chjj/marked) lexer/parser (implemented in deep-marked/lib/marked.js and using lexers from mp-lex)
 * a proposition of language based on this meta-language (implemented in deep-marked/index)
 * the clients/protocol (jquery ajax or nodejs fs) to load and parse documents written in that flavour of marked.
 
 See [marked](https://github.com/chjj/marked) for config and basics usage.
 
-If you just want to play with the meta language or understand what is it : see [meta language](#meta-language)
+If you want to play with the meta language : see [mp-lex](https://github.com/nomocas/mp-lex)
 
 ## deep-marked macros language
 
-deep-marked define the 3 defaults render methods for you that interpret macros and try to apply associated directives or behaviour.
-
 ### substitution macros
-The replace_macro simply looks in provided options if there is a 'context' property.
+The replace_macro simply looks in options if there is a 'context' property.
 It seeks in it after property pointed by path provided between macros boundaries (i.e. {{ my.path.from.context }}) and returns it.
 
 ```javascript 
@@ -25,20 +23,11 @@ deep.marked("{{ address.zip }}", { context:{ address:{ zip:"1190" }}})
 ```
 will return '1190'.
 
-### Block macros generality
-
-There is three things important to know : 
-* either the directive name reflect a macros defined in deep.marked.macros, and it will be used to render the macros. (see below to defining such macros)
-* either the directive name is "unknown" (there is no associated macros in deep.marked.macros), and then deep-marked produce a tag with the name of the unknown directive. (i.e.  `<myDirective>content</myDirective>`)
-* directives are composed together, from right to left.
-
-And obviously blocks could be embedded in other blocks, and blocks could contains any other macros rules.
-
-Example:
+### Block macros
 
 With :
 ```javascript
-deep.marked.macros.myDirective = function(args, content, options)
+deep.marked.directives.myDirective = function(args, content, options)
 {
 	return args[0] + " : " + content.toUpperCase();
 };
@@ -51,6 +40,14 @@ and this :
 
 ```
 It will output : `<myTag>hello world : MY CONTENT...</myTag>`
+
+There is three things important to know : 
+* either the directive name reflect a directive defined in deep.marked.directives, and it will be used to render the macros. (see below to defining such macros)
+* either the directive name is "unknown" (there is no associated directive in deep.marked.directives), and then deep-marked produce a tag with the name of the unknown directive. (i.e.  `<myDirective>content</myDirective>`)
+* directives are composed together, from right to left.
+
+And obviously blocks could be embedded in other blocks, and blocks could contains any other macros rules.
+
 
 
 #### Difference between parsed and raw block-macros 
@@ -104,7 +101,7 @@ deep-mail		(mails sender utilities)
 ```
 
 ```javascript
-deep.marked.macros.table = function(args, content, options){
+deep.marked.directives.table = function(args, content, options){
 	var lines = deep.marked.parseLinesCells(content, false);
 	var output = "<table>\n";
 	if(args && args[0])	// args[0] === table caption
@@ -154,9 +151,9 @@ deep("myProtocol::/my/markdown/file.mkd").run(null, { my:{ vars:true }}).log();
 
 ## Meta-language
 
-Remarque : "Block" and "inline" refer to concepts related to markdown. A "block" start line without any spaces (or tabulations), as heading (i.e. # this is title), and couldn't be mixed with other on the same line. For inline object, the line could start with spaces, could contains several lexem, and the line and its following (not blank) are wrapped by a paragraph (p tag).
+Remarque : "Block" and "inline" refer to concepts related to markdown. A "block" start line without any spaces (or tabulations), as heading (i.e. # this is title), and couldn't be mixed with other on the same line. For inline object, the line could start with spaces, could contains several lexems, and the line and its following (not blank) are wrapped by a paragraph (p tag).
 
-See [marked](https://github.com/chjj/marked) for basics usage.
+See [marked](https://github.com/chjj/marked) for basics concepts.
 
 
 ### Block macros

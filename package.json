@@ -14,7 +14,14 @@
     "url":"https://github.com/deepjs/deep-marked.git"
   },
   "dependencies": {
-    "deepjs":">=0.13.0"
+    "deepjs":">=0.13.0",
+    "kroked":">=0.1.1"
   },
+  "keywords": [
+    "markdown",
+    "deepjs",
+    "marked",
+    "kroked"
+  ],
   "main": "./index.js"
 }

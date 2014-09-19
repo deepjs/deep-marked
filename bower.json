@@ -17,6 +17,10 @@
     "marked",
     "kroked"
   ],
+  "dependencies": {
+    "deepjs":">=0.13.0",
+    "kroked":">=0.1.1"
+  },
   "license": "LGPL 3.0",
   "ignore": [
     "**/.*",

@@ -1,27 +1,27 @@
 {
-  "name": "deep-marked",
-  "version": "0.2.3",
-  "author": "Gilles Coomans <gilles.coomans@gmail.com>",
-  "description": "deepjs kroked clients (markdown with macros).",
-  "licenses": [
-    {
-         "type": "LGPLv3.0",
-         "url": "http://www.gnu.org/licenses/lgpl-3.0.txt"
-     }
-  ],
-  "repository": {
-    "type":"git",
-    "url":"https://github.com/deepjs/deep-marked.git"
-  },
-  "dependencies": {
-    "deepjs":">=0.13.0",
-    "kroked":">=0.1.1"
-  },
-  "keywords": [
-    "markdown",
-    "deepjs",
-    "marked",
-    "kroked"
-  ],
-  "main": "./index.js"
+ "name": "deep-marked",
+ "version": "0.2.4",
+ "author": "Gilles Coomans <gilles.coomans@gmail.com>",
+ "description": "deepjs kroked clients (markdown with macros).",
+ "licenses": [
+  {
+   "type": "LGPLv3.0",
+   "url": "http://www.gnu.org/licenses/lgpl-3.0.txt"
+  }
+ ],
+ "repository": {
+  "type": "git",
+  "url": "https://github.com/deepjs/deep-marked.git"
+ },
+ "dependencies": {
+  "deepjs": ">=0.13.0",
+  "kroked": ">=0.1.1"
+ },
+ "keywords": [
+  "markdown",
+  "deepjs",
+  "marked",
+  "kroked"
+ ],
+ "main": "./index.js"
 }

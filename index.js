@@ -9,6 +9,6 @@ if (typeof define !== 'function') {
 define(["require", "kroked/index", "deepjs/deep"], 
 function(require, kroked, deep){
 	// expose trhough deep
-	deep.marked = kroked;
+	deep.marked = deep.kroked = kroked;
 	return deep.marked;
 });

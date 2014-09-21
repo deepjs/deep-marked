@@ -1,6 +1,6 @@
 {
  "name": "deep-marked",
- "version": "0.2.4",
+ "version": "0.2.5",
  "author": "Gilles Coomans <gilles.coomans@gmail.com>",
  "description": "deepjs kroked clients (markdown with macros).",
  "licenses": [

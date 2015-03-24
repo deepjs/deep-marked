@@ -14,7 +14,7 @@ Browser (jq-ajax) example :
 require("deep-marked/lib/jq-ajax"); // load deep.marked : contains language definition
 deep.marked.jqajax("myProtocol");
 //...
-deep("myProtocol::/my/markdown/file.mkd").run(null, { context:{ vars:true }}).log();
+deep.nodes("myProtocol::/my/markdown/file.mkd").run(null, { context:{ vars:true }}).log();
 // will output the result
 ```
 
@@ -23,7 +23,7 @@ Nodejs (fs) example :
 require("deep-marked/lib/nodejs"); // load deep.marked : contains language definition
 deep.marked.nodejs("myProtocol");
 //...
-deep("myProtocol::/my/markdown/file.mkd").run(null, { context:{ vars:true }}).log();
+deep.nodes("myProtocol::/my/markdown/file.mkd").run(null, { context:{ vars:true }}).log();
 // will output the result
 ```
 
